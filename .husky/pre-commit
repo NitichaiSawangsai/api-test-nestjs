@@ -4,3 +4,4 @@
 yarn run prepush
 
 git add test-report.xml
+git add test/coverage/lcov.info
