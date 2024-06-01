@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: db
+    image: 'postgres:alpine'
+    restart: always
+    networks:
+      - scg_network
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: dev
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - postgres-data-test:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 200M
+        reservations:
+          cpus: '0.10'
+          memory: 17M
+
+networks:
+  scg_network:
+volumes:
+  postgres-data-test:

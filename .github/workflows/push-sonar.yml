@@ -1,0 +1,33 @@
+name: Run Sonar cloud analysis
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+jobs:
+    sonar-analysis:
+      name: Run test coverage and sonar analysis
+      runs-on: ubuntu-latest
+      timeout-minutes: 10
+
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        
+        - name: Install Node.js dependencies
+          run: yarn install
+
+        - name: Run test
+          run: yarn run test
+        
+        - name: SonarCloud Scan
+          uses: sonarsource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
