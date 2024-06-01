@@ -1,34 +1,11 @@
-import { LoggerService, ModuleMetadata } from '@nestjs/common';
+import { ModuleMetadata } from '@nestjs/common';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { DatabaseTest } from './config.test';
 import { HttpModule } from '@nestjs/axios';
-import { LoggerModule } from '../../src/logger/logger.module';
-import { LOGGER_SERVICE } from '../../src/app.constants';
 import { AuthModule } from '../../src/auth/auth.module';
 import { Repository } from 'typeorm';
 
-const serviceLog: LoggerService = {
-  error(
-    message: any,
-    trace?: string,
-    context?: string,
-    meta?: Record<string, unknown>,
-  ): any {
-    return { message, trace, context, meta };
-  },
-  log(message: any, context?: string, meta?: Record<string, unknown>): any {
-    return { message, context, meta };
-  },
-  warn(message: any, context?: string, meta?: Record<string, unknown>): any {
-    return { message, context, meta };
-  },
-  debug(message: any, context?: string, meta?: Record<string, unknown>): any {
-    return { message, context, meta };
-  },
-  verbose(message: any, context?: string, meta?: Record<string, unknown>): any {
-    return { message, context, meta };
-  },
-};
+
 export class TestUtil {
   static createTestingModule({
     controllers = [],
@@ -48,13 +25,11 @@ export class TestUtil {
     }));
 
     return Test.createTestingModule({
-      imports: [DatabaseTest, AuthModule, ...imports, HttpModule, LoggerModule],
+      imports: [DatabaseTest, AuthModule, ...imports, HttpModule],
       controllers,
       providers,
       exports,
     })
-      .overrideProvider(LOGGER_SERVICE)
-      .useValue(serviceLog);
   }
 }
 
