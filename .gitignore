@@ -19,7 +19,9 @@ lerna-debug.log*
 # Tests
 /coverage
 /.nyc_output
-/test/coverage
+/test/coverage/lcov-report
+/test/coverage/clover.xml
+/test/coverage/coverage-final.json
 
 # IDEs and editors
 /.idea
