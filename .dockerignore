@@ -3,3 +3,6 @@
 
 .env
 **/*.secret.yaml
+
+/test
+test-report.xml
