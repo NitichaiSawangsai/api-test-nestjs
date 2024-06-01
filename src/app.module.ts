@@ -53,11 +53,10 @@ import { UserManagementModule } from './user-management/user-management.module';
       inject: [ConfigService],
     }),
     AuthModule,
-    UserManagementModule
+    UserManagementModule,
   ],
   controllers: [],
-  providers: [
-  ],
+  providers: [],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,13 +1,6 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UserService } from '../user-management/services/user.service';
-import {
-  IAccessToken,
-  IAuthPayload,
-} from '../common/interface/auth.interface';
+import { IAccessToken, IAuthPayload } from '../common/interface/auth.interface';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user-management/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';

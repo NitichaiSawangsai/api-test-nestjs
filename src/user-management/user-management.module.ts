@@ -13,17 +13,12 @@ import serverConfig from '../config/server.config';
     ConfigModule.forRoot({
       load: [serverConfig],
     }),
-    TypeOrmModule.forFeature([
-      User,
-    ]),
+    TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),
     forwardRef(() => HttpModule),
   ],
   controllers: [UserManagementController],
   providers: [UserService],
-  exports: [
-    UserService,
-    TypeOrmModule.forFeature([User]),
-  ],
+  exports: [UserService, TypeOrmModule.forFeature([User])],
 })
 export class UserManagementModule {}

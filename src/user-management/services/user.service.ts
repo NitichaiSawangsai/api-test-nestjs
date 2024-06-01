@@ -1,12 +1,11 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { User } from "../entities/user.entity";
-import { QueryUserDto, QueryUsersDto } from "../dtos/user.dto";
-import { hashEmailUseWhere } from "../../common/utils/hash-data-identifiable.utils";
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { QueryUserDto, QueryUsersDto } from '../dtos/user.dto';
+import { hashEmailUseWhere } from '../../common/utils/hash-data-identifiable.utils';
 import serverConf from '../../config/server.config';
-import { ConfigType } from "@nestjs/config";
-import { IUser } from "../../common/interface/auth.interface";
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -17,7 +16,6 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-
 
   async getUser(user, query: QueryUserDto) {
     const email =
@@ -46,38 +44,43 @@ export class UserService {
       });
     }
 
-    let userDB = await qb.getOne();
+    const userDB = await qb.getOne();
 
     if (!userDB) {
       throw new NotFoundException('User not found', 'USER_NOT_FOUND');
     }
 
-    return userDB
+    return userDB;
   }
 
-
   async getV1Users(query: QueryUsersDto) {
-    const queryBuilder = await this.userRepository.createQueryBuilder('user')
-    
-    if(query?.query){
-      queryBuilder.where('LOWER(user.username) like LOWER(:query)',{
-        query: `%${query.query}%` 
-      })
+    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+
+    if (query?.query) {
+      queryBuilder.where('LOWER(user.username) like LOWER(:query)', {
+        query: `%${query.query}%`,
+      });
     }
 
-    return queryBuilder.offset((query.page -1) * query.limit ).limit(query.limit).getMany()
+    return queryBuilder
+      .offset((query.page - 1) * query.limit)
+      .limit(query.limit)
+      .getMany();
   }
 
   async getV2Users(query: QueryUsersDto) {
-    const queryBuilder = await this.userRepository.createQueryBuilder('user')
-    
-    if(query?.query){
-      queryBuilder.where('user.username ilike :query',{
-        query: `%${query.query}%` 
-      })
+    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+
+    if (query?.query) {
+      queryBuilder.where('user.username ilike :query', {
+        query: `%${query.query}%`,
+      });
     }
 
-    return queryBuilder.offset((query.page -1) * query.limit ).limit(query.limit).getMany()
+    return queryBuilder
+      .offset((query.page - 1) * query.limit)
+      .limit(query.limit)
+      .getMany();
   }
 
   async getV3Users(query: QueryUsersDto) {
@@ -87,22 +90,15 @@ export class UserService {
       WHERE 1=1 ::WHERE
       OFFSET ${(query.page - 1) * query.limit}
       LIMIT ${query.limit}
-    `
-    const valueRaw = []
-    
-    if(query?.query){
-      textQuery = textQuery.replace(
-        /::WHERE/g,
-        ` AND u.username ILIKE $1`
-      )
-      valueRaw.push(`%${query?.query}%`)
-    }
-    textQuery = textQuery.replace(
-      /::WHERE/g,
-      ``
-    )
+    `;
+    const valueRaw = [];
 
-    return this.userRepository.query(textQuery,valueRaw)
+    if (query?.query) {
+      textQuery = textQuery.replace(/::WHERE/g, ` AND u.username ILIKE $1`);
+      valueRaw.push(`%${query?.query}%`);
+    }
+    textQuery = textQuery.replace(/::WHERE/g, ``);
+
+    return this.userRepository.query(textQuery, valueRaw);
   }
-  
 }

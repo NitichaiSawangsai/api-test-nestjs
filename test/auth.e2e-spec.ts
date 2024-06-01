@@ -10,7 +10,6 @@ import { User } from '../src/user-management/entities/user.entity';
 import { AuthModule } from '../src/auth/auth.module';
 import { UserService } from '../src/user-management/services/user.service';
 import { QueryUserDto } from '../src/user-management/dtos/user.dto';
-import { faker } from '@faker-js/faker';
 import { UserStatusType } from '../src/user-management/user-management.enum';
 
 describe('Auth module', () => {
@@ -56,59 +55,57 @@ describe('Auth module', () => {
         password: null,
         username: 'admin2',
         createdBy: 'admin@scg.com',
-      status: UserStatusType.Inactive,
-    }),
+        status: UserStatusType.Inactive,
+      }),
       userRepository.create({
         id: 3,
         email: 'admin3@scg.com',
         password: '12345',
         username: 'admin3',
         createdBy: 'admin@scg.com',
-      status: UserStatusType.Inactive,
-    }),
+        status: UserStatusType.Inactive,
+      }),
       userRepository.create({
         id: 4,
         email: 'admin4@scg.com',
         password: '12345',
         username: 'admin4',
         createdBy: 'admin@scg.com',
-      status: UserStatusType.Inactive,
-    }),
+        status: UserStatusType.Inactive,
+      }),
       userRepository.create({
         id: 5,
         email: 'admin5@scg.com',
         password: '12345',
         username: 'admin5',
         createdBy: 'admin@scg.com',
-      status: UserStatusType.Inactive,
-    }),
+        status: UserStatusType.Inactive,
+      }),
       userRepository.create({
         id: 6,
         email: 'admin6@scg.com',
         password: '12345',
         username: 'admin6',
         createdBy: 'admin@scg.com',
-      status: UserStatusType.Inactive,
-    }),
+        status: UserStatusType.Inactive,
+      }),
     ]);
 
     jest.spyOn(authService, 'decodeJwt').mockImplementation(() => {
       return user;
     });
 
-    jest
-      .spyOn(userService, 'getUser')
-      .mockImplementation((user, query: QueryUserDto) => {
-        expect(user).toEqual(
-          expect.objectContaining({
-            id: 1,
-            email: 'admin@scg.com',
-          }),
-        );
-        return {
-          ...user,
-        };
-      });
+    jest.spyOn(userService, 'getUser').mockImplementation((user) => {
+      expect(user).toEqual(
+        expect.objectContaining({
+          id: 1,
+          email: 'admin@scg.com',
+        }),
+      );
+      return {
+        ...user,
+      };
+    });
   });
 
   afterEach(async () => {

@@ -5,7 +5,6 @@ import { HttpModule } from '@nestjs/axios';
 import { AuthModule } from '../../src/auth/auth.module';
 import { Repository } from 'typeorm';
 
-
 export class TestUtil {
   static createTestingModule({
     controllers = [],
@@ -29,7 +28,7 @@ export class TestUtil {
       controllers,
       providers,
       exports,
-    })
+    });
   }
 }
 

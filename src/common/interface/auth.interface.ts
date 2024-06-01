@@ -19,5 +19,4 @@ export interface IRequestAuth extends Request {
   get: (param: string) => string;
 }
 
-export interface IUser extends User {
-}
+export type IUser = User;

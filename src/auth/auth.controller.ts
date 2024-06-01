@@ -5,10 +5,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/auth.dto';
 
@@ -25,6 +22,5 @@ export class AuthController {
     dto: LoginDto,
   ) {
     return this.authService.login(dto);
-
   }
 }

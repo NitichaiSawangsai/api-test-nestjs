@@ -51,8 +51,7 @@ export class UserAuthGuard implements CanActivate {
         userMe = user;
         user = await this.userService.getUser(
           { ...userMe, encodeEmail: token },
-          {
-          },
+          {},
         );
       }
     } catch (error) {

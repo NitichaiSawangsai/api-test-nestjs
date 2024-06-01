@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Expose, Transform } from "class-transformer";
-import { IsString, IsOptional, IsNumber } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Expose, Transform } from 'class-transformer';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class QueryUserDto {
   @ApiPropertyOptional({
@@ -22,16 +22,12 @@ export class QueryUsersDto {
   @ApiProperty()
   @IsNumber()
   @Expose()
-  @Transform(
-    ({ value }) => Number(value)
-  )
+  @Transform(({ value }) => Number(value))
   page: number;
 
   @ApiProperty()
   @IsNumber()
   @Expose()
-  @Transform(
-    ({ value }) => Number(value)
-  )
+  @Transform(({ value }) => Number(value))
   limit: number;
 }
