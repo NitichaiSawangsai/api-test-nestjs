@@ -23,6 +23,3 @@ export class LoginDto {
   @Expose()
   password: string;
 }
-
-@Exclude()
-export class RegisterDto extends LoginDto {}

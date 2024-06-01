@@ -20,8 +20,7 @@ import { HttpModule } from '@nestjs/axios';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('server.auth.jwtSecretKey'),
         signOptions: {
-          expiresIn:
-            configService.get('server.nodeEnv') === 'local' ? 86460 : 3660,
+          expiresIn: 3660,
         },
       }),
       inject: [ConfigService],

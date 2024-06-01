@@ -115,139 +115,61 @@ describe('Auth module', () => {
     expect(app).toBeDefined();
   });
 
-  // describe('/POST login', () => {
-  //   it('Should be error show message', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 400,
-  //           message: [
-  //             `Please contact your system administrator.`,
-  //             'email should not be empty',
-  //             'password must be a string',
-  //             'password should not be empty',
-  //           ],
-  //           error: 'Bad Request',
-  //         });
-  //       }));
+  describe('/POST login', () => {
+    it('Should be error dto', () =>
+      app
+        .inject({
+          method: 'POST',
+          url: '/api/v1/auth/login',
+        })
+        .then((result) => {
+          const json = result.json();
+          expect(json).toEqual({
+            statusCode: 400,
+            message: [
+              'Please contact your system administrator.',
+              'email should not be empty',
+              'password must be a string',
+              'password should not be empty',
+            ],
+            error: 'Bad Request',
+          });
+        }));
 
-  //   it('Should be success', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin@scg.com',
-  //           password: '12345',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json?.accessToken).not.toEqual(undefined);
-  //       }));
+    it('Should be success', () => {
+      return app
+        .inject({
+          method: 'POST',
+          url: '/api/v1/auth/login',
+          payload: {
+            email: 'admin@scg.com',
+            password: '12345',
+          },
+        })
+        .then((result) => {
+          const json = result.json();
+          expect(json?.accessToken).not.toEqual(undefined);
+        });
+    });
 
-  //   it('Should be login not success case 1', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin@scg.com',
-  //           password: '12',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 404,
-  //           message: `We can't sign into your account. Please contact your system administrator`,
-  //           error: 'EMAIL_INCORRECT_OR_PASSWORD_INCORRECT',
-  //         });
-  //       }));
-
-  //   it('Should be login not success case 2', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin3@scg.com',
-  //           password: '12345',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 404,
-  //           message:
-  //             "We can't sign into your account. Please contact your system administrator.",
-  //           error: 'EMPLOYEE_NOT_FOUND',
-  //         });
-  //       }));
-
-  //   it('Should be login not success case 3', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin4@scg.com',
-  //           password: '12345',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 404,
-  //           message:
-  //             "We can't sign into your account. Please contact your system administrator.",
-  //           error: 'EMPLOYEE_NOT_FOUND',
-  //         });
-  //       }));
-
-  //   it('Should be login not success case 4', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin5@scg.com',
-  //           password: '12345',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 404,
-  //           message:
-  //             "We can't sign into your account. Please contact your system administrator.",
-  //           error: 'EMPLOYEE_NOT_FOUND',
-  //         });
-  //       }));
-
-  //   it('Should be login not success case 5', () =>
-  //     app
-  //       .inject({
-  //         method: 'POST',
-  //         url: '/api/v1/auth/login',
-  //         payload: {
-  //           email: 'admin6@scg.com',
-  //           password: '12345',
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const json = result.json();
-  //         expect(json).toEqual({
-  //           statusCode: 404,
-  //           message:
-  //             "We can't sign into your account. Please contact your system administrator.",
-  //           error: 'EMPLOYEE_NOT_FOUND',
-  //         });
-  //       }));
-  // });
+    it('Should be success but not found user', () => {
+      return app
+        .inject({
+          method: 'POST',
+          url: '/api/v1/auth/login',
+          payload: {
+            email: 'admi@scg.com',
+            password: '12345',
+          },
+        })
+        .then((result) => {
+          const json = result.json();
+          expect(json).toEqual({
+            statusCode: 404,
+            message: 'Please contact your system administrator',
+            error: 'EMAIL_INCORRECT_OR_PASSWORD_INCORRECT',
+          });
+        });
+    });
+  });
 });

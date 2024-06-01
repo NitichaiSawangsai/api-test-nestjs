@@ -1,23 +1,16 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { UserService } from '../user-management/services/user.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IAccessToken, IAuthPayload } from '../common/interface/auth.interface';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user-management/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import serverConf from '../config/server.config';
-import { ConfigType } from '@nestjs/config';
 import * as moment from 'moment-timezone';
 import { LoginDto } from './dtos/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(serverConf.KEY)
-    private readonly serverConfig: ConfigType<typeof serverConf>,
-
     private jwtService: JwtService,
-    private readonly userService: UserService,
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
