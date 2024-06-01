@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="/Users/nitichaisawangsai/Desktop/company/scg/du/api-test-nestjs .tmp/test/auth.spec.ts">
+    <testCase name="Auth module should be defined" duration="0"/>
+    <testCase name="Auth module Service decodeJwt should be success." duration="0"/>
+    <testCase name="Auth module Service decodeJwt should be err." duration="1"/>
+  </file>
+  <file path="/Users/nitichaisawangsai/Desktop/company/scg/du/api-test-nestjs .tmp/test/user-management.e2e-spec.ts">
+    <testCase name="User Management module should be defined" duration="10"/>
+    <testCase name="User Management module /GET /api/v1/management/v1/users Should be error dto" duration="16"/>
+    <testCase name="User Management module /GET /api/v1/management/v1/users Should be success" duration="5"/>
+    <testCase name="User Management module MOCK Entity /GET /api/v2/management/v2/users Should be error dto" duration="4"/>
+    <testCase name="User Management module MOCK Entity /GET /api/v2/management/v2/users Should be success" duration="4"/>
+    <testCase name="User Management module MOCK Entity /GET /api/v3/management/v3/users Should be error dto" duration="2"/>
+    <testCase name="User Management module MOCK Entity /GET /api/v3/management/v3/users Should be success" duration="3"/>
+  </file>
+  <file path="/Users/nitichaisawangsai/Desktop/company/scg/du/api-test-nestjs .tmp/test/auth.e2e-spec.ts">
+    <testCase name="Auth module should be defined" duration="17"/>
+    <testCase name="Auth module /POST login Should be error dto" duration="15"/>
+    <testCase name="Auth module /POST login Should be success" duration="14"/>
+    <testCase name="Auth module /POST login Should be success but not found user" duration="5"/>
+  </file>
+</testExecutions>

@@ -6,15 +6,14 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './services/user.service';
 import { UserAuthGuard } from '../auth/guards/user-auth-guard.guard';
 import { QueryUsersDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 
-@UseGuards(UserAuthGuard)
-@ApiOkResponse()
 @ApiBearerAuth()
+@UseGuards(UserAuthGuard)
 @ApiTags('UserManagement')
 @Controller('api/v1/management')
 @UsePipes(new ValidationPipe({ transform: true }))

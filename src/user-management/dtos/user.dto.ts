@@ -22,12 +22,12 @@ export class QueryUsersDto {
   @ApiProperty()
   @IsNumber()
   @Expose()
-  @Transform(({ value }) => Number(value))
+  @Transform(({ value }) => (value ? Number(value) : null))
   page: number;
 
   @ApiProperty()
   @IsNumber()
   @Expose()
-  @Transform(({ value }) => Number(value))
+  @Transform(({ value }) => (value ? Number(value) : null))
   limit: number;
 }

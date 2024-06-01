@@ -3,3 +3,5 @@
 
 yarn run prepush
 
+
+git add test-report.xml

@@ -8,7 +8,6 @@ import {
   VersionColumn,
 } from 'typeorm';
 import { UserStatusType } from '../user-management.enum';
-import { encodeEmail } from '../../common/utils/hash-data-identifiable.utils';
 
 @Entity({
   name: 'user',
@@ -54,8 +53,4 @@ export class User {
 
   @Column({ name: 'last_login', nullable: true })
   lastLogin?: Date;
-
-  encodeEmail? = () => {
-    return encodeEmail(process.env.JWT_SECRET_KEY, this.email);
-  };
 }

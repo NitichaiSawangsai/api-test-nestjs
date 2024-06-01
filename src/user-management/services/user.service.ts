@@ -69,7 +69,7 @@ export class UserService {
   }
 
   async getV2Users(query: QueryUsersDto) {
-    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
 
     if (query?.query) {
       queryBuilder.where('user.username ilike :query', {
