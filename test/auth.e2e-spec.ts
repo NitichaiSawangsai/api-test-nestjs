@@ -9,7 +9,6 @@ import { AuthService } from '../src/auth/auth.service';
 import { User } from '../src/user-management/entities/user.entity';
 import { AuthModule } from '../src/auth/auth.module';
 import { UserService } from '../src/user-management/services/user.service';
-import { QueryUserDto } from '../src/user-management/dtos/user.dto';
 import { UserStatusType } from '../src/user-management/user-management.enum';
 
 describe('Auth module', () => {
