@@ -8,10 +8,6 @@ import { AuthModule } from '../src/auth/auth.module';
 import * as jwt from 'jsonwebtoken';
 import { BadRequestException } from '@nestjs/common';
 
-jest.mock('jsonwebtoken', () => ({
-  verify: jest.fn(),
-}));
-
 describe('Auth module', () => {
   let app: NestFastifyApplication;
   let authService: AuthService;
