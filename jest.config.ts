@@ -3,7 +3,7 @@ import type { Config } from '@jest/types';
 export default {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '.',
-  testRegex: '.*\\.(spec|e2e-spec)\\.ts$',
+  testRegex: '.*\\.(spec|e2e-spec|test-spec)\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },

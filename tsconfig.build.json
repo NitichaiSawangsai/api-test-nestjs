@@ -6,6 +6,7 @@
     "dist",
     "**/*spec.ts",
     "**/*e2e-spec.ts",
+    "**/*test-spec.ts",
     "jest.config.ts",
     "ormconfig.ts"
   ]
