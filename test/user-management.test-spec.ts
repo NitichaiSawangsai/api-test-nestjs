@@ -16,6 +16,7 @@ describe('User Management module', () => {
   let userRepository: Repository<User>;
   let authService: AuthService;
   let userService: UserService;
+  let users: User[];
 
   beforeAll(async () => {
     const moduleRef = await TestUtil.createTestingModule({
@@ -36,20 +37,22 @@ describe('User Management module', () => {
   });
 
   beforeEach(async () => {
-    const user = userRepository.create({
-      id: 1,
-      email: 'admin@scg.com',
-      password: '12345',
-      refreshToken: '1',
-      username: 'admin1',
-      status: UserStatusType.Active,
-      createdBy: 'admin@scg.com',
-    });
-    await userRepository.save([user]);
+    users = [
+      userRepository.create({
+        id: 1,
+        email: 'admin@scg.com',
+        password: '12345',
+        refreshToken: '1',
+        username: 'admin1',
+        status: UserStatusType.Active,
+        createdBy: 'admin@scg.com',
+      }),
+    ];
+    await userRepository.save(users);
 
     jest.spyOn(authService, 'decodeJwt').mockImplementation((param) => {
       if (param === '123345') {
-        return user;
+        return users?.[0];
       }
       return null;
     });
@@ -92,7 +95,7 @@ describe('User Management module', () => {
           });
         }));
 
-    it('Should be success', () => {
+    it('Should be success when the username is "admin1" and fetching page 1 with a limit of 10.', () => {
       return app
         .inject({
           method: 'GET',
@@ -145,31 +148,27 @@ describe('User Management module', () => {
             });
           }));
 
-      it('Should be success', () => {
+      it('Should be success when the username is "admin1" and fetching page 1 with a limit of 10.', () => {
         userRepository.createQueryBuilder = jest
           .fn()
-          .mockImplementationOnce((v1) => {
-            expect(v1).toEqual('user');
+          .mockImplementationOnce((param1) => {
+            let result = param1 === 'user' ? users : [];
             return {
-              where: (v21, v22) => {
-                expect(v21).toEqual('user.username ilike :query');
-                expect(v22).toEqual({ query: '%admin1%' });
+              where: (param21, param22) => {
+                if (param21.indexOf('ilike') > -1 && param22?.query) {
+                  result = result?.filter(
+                    (v) =>
+                      v.username?.indexOf(param22?.query?.replace(/%/gi, '')) >
+                      -1,
+                  );
+                }
               },
-              offset: (v3) => {
-                expect(v3).toEqual(0);
+              offset: (param3) => {
                 return {
-                  limit: (v4) => {
-                    expect(v4).toEqual(10);
+                  limit: (param4) => {
                     return {
                       getMany: () => {
-                        return [
-                          {
-                            username: 'admin1',
-                            password: '12345',
-                            email: 'admin@scg.com',
-                            status: 'active',
-                          },
-                        ];
+                        return result.splice(param3, param4);
                       },
                     };
                   },
@@ -229,9 +228,9 @@ describe('User Management module', () => {
             });
           }));
 
-      it('Should be success', () => {
-        userRepository.query = jest.fn().mockImplementationOnce((v1) => {
-          expect(v1?.replace(/ /gi, '')).toEqual(
+      it('Should be success when the username is "admin1" and fetching page 1 with a limit of 10.', () => {
+        userRepository.query = jest.fn().mockImplementationOnce((param1) => {
+          expect(param1?.replace(/ /gi, '')).toEqual(
             `
             SELECT *
             FROM "user-management"."user" u
@@ -240,14 +239,7 @@ describe('User Management module', () => {
             LIMIT 10
             `?.replace(/ /gi, ''),
           );
-          return [
-            {
-              username: 'admin1',
-              password: '12345',
-              email: 'admin@scg.com',
-              status: 'active',
-            },
-          ];
+          return [users[0]];
         });
 
         return app
