@@ -27,14 +27,11 @@ describe('Auth module', () => {
     await app.getHttpAdapter().getInstance().ready();
   });
 
-  it('should be defined', () => {
-    expect(app).toBeDefined();
-  });
-
-  describe('Service decodeJwt', () => {
-    it('should be success.', async () => {
-      (jwt.verify as jest.Mock) = jest.fn().mockImplementationOnce((v) => {
-        expect(v).toEqual('12345');
+  beforeEach(async () => {
+    (jwt.verify as jest.Mock) = jest.fn().mockImplementation((param) => {
+      if (!param) {
+        throw new BadRequestException('jwt must be provided');
+      } else if (param === '12345') {
         return {
           id: 1,
           email: 'test@scg.com',
@@ -42,11 +39,19 @@ describe('Auth module', () => {
           iat: 1717251817,
           exp: 1717338277,
         };
-      });
+      }
 
-      const result = await authService.decodeJwt('12345');
+      throw new BadRequestException('jwt malformed');
+    });
+  });
 
-      expect(result).toEqual(
+  it('should be defined', () => {
+    expect(app).toBeDefined();
+  });
+
+  describe('Service decodeJwt', () => {
+    it('should be success.', async () => {
+      expect(authService.decodeJwt('12345')).toEqual(
         expect.objectContaining({
           id: 1,
           email: 'test@scg.com',
@@ -54,17 +59,16 @@ describe('Auth module', () => {
       );
     });
 
-    it('should be err.', async () => {
-      (jwt.verify as jest.Mock) = jest.fn().mockImplementationOnce((v) => {
-        expect(v).toEqual('12345');
-        throw new BadRequestException('ERR JWT');
-      });
+    it('error should be raised when the data is null.', async () =>
+      expect(async () => {
+        const result = await authService.decodeJwt(null);
+        return result;
+      }).rejects.toThrow('jwt must be provided'));
 
-      try {
-        await authService.decodeJwt('12345');
-      } catch (error) {
-        expect(error.message).toEqual('ERR JWT');
-      }
-    });
+    it('error should occur when the data is incorrect.', async () =>
+      expect(async () => {
+        const result = await authService.decodeJwt('123');
+        return result;
+      }).rejects.toThrow('jwt malformed'));
   });
 });

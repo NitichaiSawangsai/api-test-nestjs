@@ -35,6 +35,10 @@ export class UserAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const bearer = request.headers.authorization?.replace(/^bearer\s/i, '');
 
+    if (!bearer) {
+      throw new UnauthorizedException();
+    }
+
     let user: User = null;
     let errorDecode = null;
     let userMe: any = null;

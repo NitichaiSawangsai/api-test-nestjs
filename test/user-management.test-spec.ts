@@ -47,18 +47,18 @@ describe('User Management module', () => {
     });
     await userRepository.save([user]);
 
-    jest.spyOn(authService, 'decodeJwt').mockImplementation(() => {
-      return user;
+    jest.spyOn(authService, 'decodeJwt').mockImplementation((param) => {
+      if (param === '123345') {
+        return user;
+      }
+      return null;
     });
 
     jest.spyOn(userService, 'getUser').mockImplementation((user) => {
-      expect(user).toEqual(
-        expect.objectContaining({
-          id: 1,
-          email: 'admin@scg.com',
-        }),
-      );
-      return user;
+      if (user.id === 1) {
+        return user;
+      }
+      return null;
     });
   });
 
@@ -76,6 +76,9 @@ describe('User Management module', () => {
         .inject({
           method: 'GET',
           url: '/api/v1/management/v1/users',
+          headers: {
+            authorization: '123345',
+          },
         })
         .then((result) => {
           const json = result.json();
@@ -94,6 +97,9 @@ describe('User Management module', () => {
         .inject({
           method: 'GET',
           url: '/api/v1/management/v1/users',
+          headers: {
+            authorization: '123345',
+          },
           query: {
             query: 'admin1',
             page: '1',
@@ -123,6 +129,9 @@ describe('User Management module', () => {
           .inject({
             method: 'GET',
             url: '/api/v1/management/v2/users',
+            headers: {
+              authorization: '123345',
+            },
           })
           .then((result) => {
             const json = result.json();
@@ -173,6 +182,9 @@ describe('User Management module', () => {
           .inject({
             method: 'GET',
             url: '/api/v1/management/v2/users',
+            headers: {
+              authorization: '123345',
+            },
             query: {
               query: 'admin1',
               page: '1',
@@ -201,6 +213,9 @@ describe('User Management module', () => {
           .inject({
             method: 'GET',
             url: '/api/v1/management/v3/users',
+            headers: {
+              authorization: '123345',
+            },
           })
           .then((result) => {
             const json = result.json();
@@ -239,6 +254,9 @@ describe('User Management module', () => {
           .inject({
             method: 'GET',
             url: '/api/v1/management/v3/users',
+            headers: {
+              authorization: '123345',
+            },
             query: {
               query: 'admin1',
               page: '1',
